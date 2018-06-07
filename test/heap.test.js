@@ -22,4 +22,16 @@ describe('Heap', () => {
     const EmptyHeap = HeapFactory();
     expect(EmptyHeap.data).to.be.an('array').that.is.empty;
   });
+
+  describe('HeapNode', () => {
+    const Heap = HeapFactory();
+    it('should create e new HeapNode without the need to pass a value if the data is a number', () => {
+      const Heap = HeapFactory();
+      Heap.Add(1);
+      expect(Heap.data).length.to.be.greaterThan(0);
+    });
+    it('should throw a type error when trying to create a HeapNode without a numeric value', () => {
+      expect(() => Heap.Add('test')).to.throw(TypeError);
+    });
+  });
 });

@@ -1,7 +1,20 @@
-export const HeapKind = {
-  MIN: 'min',
-  MAX: 'max',
-};
+class HeapNode {
+  constructor(data, value = data) {
+    this._data = data;
+    if (Number.isNaN(parseFloat(value)) || !Number.isFinite(value)) {
+      throw new TypeError(`value must be a number, ${typeof value} given`);
+    }
+    this._value = value;
+  }
+
+  get data() {
+    return this._data;
+  }
+
+  get value() {
+    return this._value;
+  }
+}
 
 class Heap {
   constructor(kind) {
@@ -16,7 +29,18 @@ class Heap {
   get data() {
     return this._data;
   }
+
+  Add(data, value = data) {
+    const node = new HeapNode(data, value);
+    this._data.push(node);
+    return this;
+  }
 }
+
+export const HeapKind = {
+  MIN: 'min',
+  MAX: 'max',
+};
 
 export function HeapFactory(kind) {
   switch (kind) {
