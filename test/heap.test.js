@@ -25,8 +25,7 @@ describe('Heap', () => {
 
   describe('HeapNode', () => {
     const Heap = HeapFactory();
-    it('should create e new HeapNode without the need to pass a value if the data is a number', () => {
-      const Heap = HeapFactory();
+    it('should create a new HeapNode without the need to pass a value if the data is a number', () => {
       Heap.Add(1);
       expect(Heap.data).length.to.be.greaterThan(0);
     });
