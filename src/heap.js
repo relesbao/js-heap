@@ -1,7 +1,4 @@
 function getParentIndex(index) {
-  if (index < 1) {
-    return 0;
-  }
   return Math.floor((index - 1) / 2);
 }
 
@@ -52,33 +49,29 @@ class Heap {
 
   Add(data, value = data) {
     const node = new HeapNode(data, value);
-    this._data.push(node);
-    if (this._data.length > 1) {
-      this._bubbleUp(this._data.length - 1);
+    this.data.push(node);
+    if (this.data.length > 1) {
+      this._bubbleUp(this.data.length - 1);
     }
-    return this;
+    return node;
   }
 
   Shift() {
-    if (this._data.length === 1) {
-      return this._data.shift();
+    if (this.data.length === 1) {
+      return this.data.shift();
     }
-    const lastIndex = this._data.length - 1;
+    const lastIndex = this.data.length - 1;
     this._swap(0, lastIndex);
-    const node = this._data.pop();
+    const node = this.data.pop();
     this._bubbleDown(0);
     return node;
   }
 
   _mustSwap(indexA, indexB) {
-    switch (this.kind) {
-      case HeapKind.MIN:
-        return this._data[indexA].value < this._data[indexB].value;
-      case HeapKind.MAX:
-        return this._data[indexA].value > this._data[indexB].value;
-      default:
-        return false;
+    if (this.kind === HeapKind.MAX) {
+      return this.data[indexA].value > this.data[indexB].value;
     }
+    return this.data[indexA].value < this.data[indexB].value;
   }
 
   _bubbleUp(index) {
@@ -92,10 +85,10 @@ class Heap {
   }
 
   _bubbleDown(index) {
-    if (index < this._data.length) {
+    if (index < this.data.length) {
       const leftIndex = getLeftNodeIndex(index);
       const rightIndex = getRightNodeIndex(index);
-      if (leftIndex <= this._data.length - 1) {
+      if (leftIndex <= this.data.length - 1) {
         let whichCompareIndex = leftIndex;
         if (rightIndex <= this.data.length - 1) {
           whichCompareIndex = this._mustSwap(leftIndex, rightIndex) ? leftIndex : rightIndex;
@@ -109,9 +102,9 @@ class Heap {
   }
 
   _swap(indexA, indexB) {
-    const tempA = this._data[indexA];
-    this._data[indexA] = this._data[indexB];
-    this._data[indexB] = tempA;
+    const tempA = this.data[indexA];
+    this.data[indexA] = this.data[indexB];
+    this.data[indexB] = tempA;
     return this;
   }
 }

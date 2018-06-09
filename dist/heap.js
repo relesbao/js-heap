@@ -13,9 +13,6 @@ exports.HeapFactory = HeapFactory;
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function getParentIndex(index) {
-  if (index < 1) {
-    return 0;
-  }
   return Math.floor((index - 1) / 2);
 }
 
@@ -74,35 +71,31 @@ var Heap = function () {
       var value = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : data;
 
       var node = new HeapNode(data, value);
-      this._data.push(node);
-      if (this._data.length > 1) {
-        this._bubbleUp(this._data.length - 1);
+      this.data.push(node);
+      if (this.data.length > 1) {
+        this._bubbleUp(this.data.length - 1);
       }
-      return this;
+      return node;
     }
   }, {
     key: 'Shift',
     value: function Shift() {
-      if (this._data.length === 1) {
-        return this._data.shift();
+      if (this.data.length === 1) {
+        return this.data.shift();
       }
-      var lastIndex = this._data.length - 1;
+      var lastIndex = this.data.length - 1;
       this._swap(0, lastIndex);
-      var node = this._data.pop();
+      var node = this.data.pop();
       this._bubbleDown(0);
       return node;
     }
   }, {
     key: '_mustSwap',
     value: function _mustSwap(indexA, indexB) {
-      switch (this.kind) {
-        case HeapKind.MIN:
-          return this._data[indexA].value < this._data[indexB].value;
-        case HeapKind.MAX:
-          return this._data[indexA].value > this._data[indexB].value;
-        default:
-          return false;
+      if (this.kind === HeapKind.MAX) {
+        return this.data[indexA].value > this.data[indexB].value;
       }
+      return this.data[indexA].value < this.data[indexB].value;
     }
   }, {
     key: '_bubbleUp',
@@ -118,10 +111,10 @@ var Heap = function () {
   }, {
     key: '_bubbleDown',
     value: function _bubbleDown(index) {
-      if (index < this._data.length) {
+      if (index < this.data.length) {
         var leftIndex = getLeftNodeIndex(index);
         var rightIndex = getRightNodeIndex(index);
-        if (leftIndex <= this._data.length - 1) {
+        if (leftIndex <= this.data.length - 1) {
           var whichCompareIndex = leftIndex;
           if (rightIndex <= this.data.length - 1) {
             whichCompareIndex = this._mustSwap(leftIndex, rightIndex) ? leftIndex : rightIndex;
@@ -136,9 +129,9 @@ var Heap = function () {
   }, {
     key: '_swap',
     value: function _swap(indexA, indexB) {
-      var tempA = this._data[indexA];
-      this._data[indexA] = this._data[indexB];
-      this._data[indexB] = tempA;
+      var tempA = this.data[indexA];
+      this.data[indexA] = this.data[indexB];
+      this.data[indexB] = tempA;
       return this;
     }
   }, {
