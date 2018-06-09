@@ -1,1 +1,1 @@
-module.exports = require('./src/heap');
+module.exports = require('./dist/heap');

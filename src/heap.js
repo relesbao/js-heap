@@ -54,9 +54,20 @@ class Heap {
     const node = new HeapNode(data, value);
     this._data.push(node);
     if (this._data.length > 1) {
-      this._bubbleUp(this._data[this._data.length - 1]);
+      this._bubbleUp(this._data.length - 1);
     }
     return this;
+  }
+
+  Shift() {
+    if (this._data.length === 1) {
+      return this._data.shift();
+    }
+    const lastIndex = this._data.length - 1;
+    this._swap(0, lastIndex);
+    const node = this._data.pop();
+    this._bubbleDown(0);
+    return node;
   }
 
   _mustSwap(indexA, indexB) {
@@ -73,9 +84,26 @@ class Heap {
   _bubbleUp(index) {
     if (index > 0) {
       const parent = getParentIndex(index);
-      if (this._mustSwap(parent, index)) {
+      if (this._mustSwap(index, parent)) {
         this._swap(index, parent);
         this._bubbleUp(parent);
+      }
+    }
+  }
+
+  _bubbleDown(index) {
+    if (index < this._data.length) {
+      const leftIndex = getLeftNodeIndex(index);
+      const rightIndex = getRightNodeIndex(index);
+      if (leftIndex <= this._data.length - 1) {
+        let whichCompareIndex = leftIndex;
+        if (rightIndex <= this.data.length - 1) {
+          whichCompareIndex = this._mustSwap(leftIndex, rightIndex) ? leftIndex : rightIndex;
+        }
+        if (this._mustSwap(whichCompareIndex, index)) {
+          this._swap(whichCompareIndex, index);
+          this._bubbleDown(whichCompareIndex);
+        }
       }
     }
   }
